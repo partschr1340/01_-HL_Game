@@ -75,17 +75,24 @@ def int_check(question, low=None, high=None):
 
         # checks input is an integer
         except ValueError:
+            print()
             print("please enter an integer")
+            print()
             continue
 
 
 # Main routine
 
 print()
-lowest = int_check("Low Number: ")
-if lowest < 1:
-    print("Please enter an integer more than 0")
-    print()
-highest = int_check("High Number: ")
+lowest = int_check("====Low Number====: ")
+print("----------------------------")
+highest = int_check("*****High Number*****: ", lowest + 1)
+print("----------------------------")
+rounds = int_check("====Rounds====: ", 1)
+print("----------------------------")
+guess = int_check("****Guess****: ", lowest, highest)
+
+
+
 
 
