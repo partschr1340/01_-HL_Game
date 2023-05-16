@@ -1,4 +1,5 @@
 # HL component 1 - Get (and check) user input
+import random
 print(" * * * * Welcome to the HIGHER LOWER game * * * *")
 print()
 
@@ -46,7 +47,6 @@ if played_before == "no":
 
 # Number checking function goes here
 def int_check(question, low=None, high=None, exit_code=None):
-
     if low is not None and high is not None:
         situation = "both"
         error = f"Please enter an integer between {low} and {high}"
@@ -79,10 +79,12 @@ def int_check(question, low=None, high=None, exit_code=None):
                     return response
 
             print(error)
+            print("----------------------------")
 
         # checks input is an integer
         except ValueError:
             print(error)
+            print("----------------------------")
 
 
 # Main routine
@@ -98,15 +100,16 @@ highest = int_check("*****High Number*****: ", lowest + 1)
 print("----------------------------")
 rounds = int_check("====Rounds====: ", 1, exit_code="")
 print("----------------------------")
-guess = int_check("****Guess****: ", lowest, highest)
+guess = int_check("****Guess (or xxx to exit)****: ", lowest, highest, "xxx")
 
-if rounds == "":
-    mode = "infinite"
-    rounds = 5
+secret = random.randint(lowest, highest)
 
 # rounds loop
 end_game = "no"
-while end_game =="no":
+while end_game == "no":
+    if rounds == "":
+        mode = "infinite"
+        rounds = 5
 
     if mode == "infinite":
         heading = f"Rounds {rounds_played + 1} (infinite mode)"
@@ -118,41 +121,17 @@ while end_game =="no":
 
     rounds_played += 1
 
-    # Start Round!!
     while True:
 
+        print("----------------------------")
+        guess = int_check("****Guess (or xxx to exit)****: ", lowest, highest, "xxx")
+        print("You guessed", guess)
 
-# HL component 5 - no duplicates
+        if guess == "xxx":
+            end_game = "yes"
+            break
 
-guesses_allowed = rounds
+    if rounds_played >= rounds:
+        break
 
-already_guessed = []
-guesses_left = guesses_allowed
-num_won = 0
 
-guess = ""
-
-while guess != secret and guesses_left >= 1:
-
-    guess = int(input("Guess: "))
-
-    if guess in already_guessed:
-        print("You already guessed that number🐵🐵 Please try again!")
-        print("You 'still' have {} guesses left".format(guesses_left))
-
-    guesses_left -= 1
-    already_guessed.append(guess)
-
-    if guesses_left >= 1:
-
-        if guess < secret:
-            print("Too low, try a higher number.\tGuesses left: {}".format(guesses_left))
-
-        elif guess > secret:
-            print("Too high, try a lower number.\tGuesses left: {}".format(guesses_left))
-    else:
-        if guess == secret:
-            if guesses_left == guesses_allowed:
-                print("Amazing! You got it")
-            else:
-                print("Well done, you got it!")
